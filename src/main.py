@@ -31,7 +31,7 @@ app.include_router(
                data_dirs=DATA_DIRS,
                storage_config=STORAGE,
                database_url=DATABASE_URL),
-    prefix="/cloudSeg_api"
+    prefix="/api"
 )
 
 
