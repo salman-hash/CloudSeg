@@ -5,9 +5,13 @@ from PIL import Image
 # =========================
 # CONFIG
 # =========================
-API_URL = "http://127.0.0.1:8000/api/segment"  # Change to your VM IP if needed
-LOCAL_IMAGE_PATH = Path(__file__).parent / "input_test.jpg"  # local image in scripts folder
-SAVE_DIR = Path(__file__).parent / "test_output"
+API_URL = "http://20.96.170.75:8000/api/segment"  # change to your VM IP if needed
+
+# Image is outside scripts folder, e.g., parent folder of scripts
+SCRIPT_DIR = Path(__file__).parent
+LOCAL_IMAGE_PATH = SCRIPT_DIR.parent / "input_test.png"  # adjust name if needed
+
+SAVE_DIR = SCRIPT_DIR / "test_output"
 SAVE_DIR.mkdir(exist_ok=True)
 
 # =========================
@@ -22,7 +26,7 @@ print(f"[INFO] Using local image: {LOCAL_IMAGE_PATH}")
 # Upload image to API
 # =========================
 with open(LOCAL_IMAGE_PATH, "rb") as f:
-    files = {"file": (LOCAL_IMAGE_PATH.name, f, "image/jpeg")}
+    files = {"file": (LOCAL_IMAGE_PATH.name, f, "image/png")}
     resp = requests.post(API_URL, files=files)
 
 if resp.status_code != 200:
@@ -35,7 +39,7 @@ print(data)
 # =========================
 # Fetch mask from API
 # =========================
-mask_url = f"http://127.0.0.1:8000/api/mask/{data['image_id']}"
+mask_url = f"http://20.96.170.75:8000/api/mask/{data['image_id']}"
 mask_resp = requests.get(mask_url)
 if mask_resp.status_code == 200:
     mask_local_path = SAVE_DIR / f"{data['image_id']}_mask.png"
