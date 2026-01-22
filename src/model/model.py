@@ -5,19 +5,22 @@ from PIL import Image
 import numpy as np
 
 class SegmentationModel:
-    def __init__(self, device="cpu"):
+    def __init__(self, model_config):
         """
-        Initialize DeepLabV3 model for inference.
+        Initialize model using a ModelConfig object
         """
-        self.device = device
-        self.model_name = "deeplabv3_resnet50"
+        self.device = model_config.device
+        self.model_name = model_config.name
+        self.input_size = model_config.input_size
+
+        # Load pretrained DeepLabV3
         self.model = models.segmentation.deeplabv3_resnet50(pretrained=True)
         self.model.eval()
         self.model.to(self.device)
 
-        # Preprocessing transforms
+        # Preprocessing
         self.preprocess = transforms.Compose([
-            transforms.Resize((512, 512)),
+            transforms.Resize(self.input_size),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
@@ -25,16 +28,16 @@ class SegmentationModel:
 
     def predict(self, image_path):
         """
-        Run inference on a single image.
-        Returns: segmentation mask as a numpy array.
+        Run inference on a single image
+        Returns: segmentation mask as numpy array
         """
         # Load image
         image = Image.open(image_path).convert("RGB")
         input_tensor = self.preprocess(image).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
-            output = self.model(input_tensor)["out"][0]  # shape: [21, H, W]
+            output = self.model(input_tensor)["out"][0]  # shape [21,H,W]
 
-        # Convert output to class mask
+        # Convert to class mask
         mask = output.argmax(0).cpu().numpy().astype(np.uint8)
         return mask
