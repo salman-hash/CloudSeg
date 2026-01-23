@@ -7,6 +7,7 @@ class ModelConfig:
         self.name = cfg.get("name", "deeplabv3_resnet50")
         self.device = cfg.get("device", "cpu")
         self.input_size = tuple(cfg.get("input_size", [512, 512]))
+        self.num_classes = cfg.get("number_of_classes", 21)
 
 
 class APIConfig:

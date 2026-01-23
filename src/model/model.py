@@ -3,15 +3,17 @@ import torch
 from torchvision import models, transforms
 from PIL import Image
 import numpy as np
+from configs.config import ModelConfig
 
 class SegmentationModel:
-    def __init__(self, model_config):
+    def __init__(self, model_config: ModelConfig):
         """
         Initialize model using a ModelConfig object
         """
         self.device = model_config.device
         self.model_name = model_config.name
         self.input_size = model_config.input_size
+        self.num_classes = model_config.num_classes
 
         # Load pretrained DeepLabV3
         self.model = models.segmentation.deeplabv3_resnet50(pretrained=True)
@@ -54,6 +56,9 @@ class SegmentationModel:
 
         # Color mask
         color_mask_img = self.get_color_mask(mask)
+        
+        # Resize color mask to original image size
+        color_mask_img = color_mask_img.resize(image.size, resample=Image.NEAREST)
 
         # Overlay on original image
         original_img = image.convert("RGBA")
