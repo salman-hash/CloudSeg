@@ -6,9 +6,9 @@
     "model_input_size": [512, 512],
     "data_dirs": {
         "base_dir": "../",
-        "input_images": "/home/azureuser/CloudSeg/data/input_images",
-        "output_masks": "/home/azureuser/CloudSeg/data/output_masks",
-        "overlay_masks": "/home/azureuser/CloudSeg/data/overlay_masks"
+        "input_images": "../data/input_images",
+        "output_masks": "../data/output_masks",
+        "overlay_masks": "../data/overlay_masks"
     },
     "api": {
         "host": "0.0.0.0",

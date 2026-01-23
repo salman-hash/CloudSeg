@@ -26,18 +26,38 @@ class SegmentationModel:
                                  std=[0.229, 0.224, 0.225])
         ])
 
-    def predict(self, image_path):
+    def get_color_mask(self, mask: np.ndarray) -> Image.Image:
+        """Convert class mask to color mask"""
+        # Generate a consistent color palette
+        np.random.seed(42)
+        palette = np.random.randint(0, 256, size=(self.num_classes, 3), dtype=np.uint8)
+        color_mask = palette[mask]  # shape H,W,3
+        return Image.fromarray(color_mask)
+
+    def predict(self, image_path: str):
         """
         Run inference on a single image
-        Returns: segmentation mask as numpy array
+        Returns:
+            mask: numpy array of class indices
+            color_mask_img: PIL Image of colored mask
+            overlay_img: PIL Image of original + mask overlay
         """
         # Load image
         image = Image.open(image_path).convert("RGB")
         input_tensor = self.preprocess(image).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
-            output = self.model(input_tensor)["out"][0]  # shape [21,H,W]
+            output = self.model(input_tensor)["out"][0]  # shape [num_classes,H,W]
 
-        # Convert to class mask
+        # Class mask
         mask = output.argmax(0).cpu().numpy().astype(np.uint8)
-        return mask
+
+        # Color mask
+        color_mask_img = self.get_color_mask(mask)
+
+        # Overlay on original image
+        original_img = image.convert("RGBA")
+        color_mask_rgba = color_mask_img.convert("RGBA")
+        overlay_img = Image.blend(original_img, color_mask_rgba, alpha=0.5)
+
+        return mask, color_mask_img, overlay_img
