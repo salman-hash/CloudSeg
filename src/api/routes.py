@@ -5,8 +5,9 @@ from pathlib import Path
 import shutil, uuid, time
 from PIL import Image
 from model.model import SegmentationModel
+from configs.config import ModelConfig, StorageConfig, DataDirsConfig
 
-def get_router(model_config, data_dirs, storage_config, database_url=None):
+def get_router(model_config: ModelConfig, data_dirs: DataDirsConfig, storage_config: StorageConfig, database_url=None):
     router = APIRouter()
 
     # Initialize model once

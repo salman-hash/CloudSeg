@@ -3,10 +3,10 @@ import torch
 from torchvision import models, transforms
 from PIL import Image
 import numpy as np
-
+from configs.config import ModelConfig
 
 class SegmentationModel:
-    def __init__(self, model_config):
+    def __init__(self, model_config: ModelConfig):
         """
         Initialize model using a ModelConfig object
         """
