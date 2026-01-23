@@ -4,6 +4,7 @@ from torchvision import models, transforms
 from PIL import Image
 import numpy as np
 
+
 class SegmentationModel:
     def __init__(self, model_config):
         """
@@ -12,6 +13,7 @@ class SegmentationModel:
         self.device = model_config.device
         self.model_name = model_config.name
         self.input_size = model_config.input_size
+        self.num_classes = model_config.num_classes
 
         # Load pretrained DeepLabV3
         self.model = models.segmentation.deeplabv3_resnet50(pretrained=True)
