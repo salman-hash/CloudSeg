@@ -12,7 +12,7 @@ class ModelConfig:
 class APIConfig:
     def __init__(self, cfg: dict):
         self.host = cfg.get("host", "0.0.0.0")
-        self.port = cfg.get("port", 8000)
+        self.port = cfg.get("port", 5000)
 
 
 class StorageConfig:
