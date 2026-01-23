@@ -54,6 +54,9 @@ class SegmentationModel:
 
         # Color mask
         color_mask_img = self.get_color_mask(mask)
+        
+        # Resize color mask to original image size
+        color_mask_img = color_mask_img.resize(image.size, resample=Image.NEAREST)
 
         # Overlay on original image
         original_img = image.convert("RGBA")
