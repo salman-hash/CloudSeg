@@ -23,7 +23,8 @@ def get_router(model_config, data_dirs, storage_config, database_url=None):
 
         image_id = str(uuid.uuid4())
         input_path = data_dirs.input_images / f"{image_id}.jpg"
-        output_path = data_dirs.output_masks / f"{image_id}_mask.png"
+        mask_path = data_dirs.output_masks / f"{image_id}_mask.png"
+        overlay_path = data_dirs.overlay_masks / f"{image_id}_overlay.png"
 
         # Save uploaded file
         with open(input_path, "wb") as buffer:
@@ -31,12 +32,12 @@ def get_router(model_config, data_dirs, storage_config, database_url=None):
 
         # Run inference
         start_time = time.time()
-        mask = model.predict(str(input_path))
+        mask, color_mask_img, overlay_img = model.predict(str(input_path))
         inference_time = int((time.time() - start_time) * 1000)
 
-        # Save mask
-        mask_image = Image.fromarray(mask)
-        mask_image.save(output_path)
+        # Save colored and overlay mask
+        color_mask_img.save(mask_path)
+        overlay_img.save(overlay_path)
 
         # todo: store metadata to DB using database_url
         # if database_url:
@@ -45,7 +46,8 @@ def get_router(model_config, data_dirs, storage_config, database_url=None):
         return {
             "image_id": image_id,
             "input_image": str(input_path),
-            "mask_image": str(output_path),
+            "mask_image": str(mask_path),
+            "overlay_image": str(mask_path),
             "model_name": model_config.name,
             "inference_time_ms": inference_time
         }

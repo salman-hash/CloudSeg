@@ -7,7 +7,8 @@
     "data_dirs": {
         "base_dir": "../",
         "input_images": "../data/input_images",
-        "output_masks": "../data/output_masks"
+        "output_masks": "../data/output_masks",
+        "overlay_masks": "../data/overlay_masks"
     },
     "api": {
         "host": "0.0.0.0",
@@ -15,6 +16,7 @@
     },
     "storage": {
         "azure_container_input": "input-images",
-        "azure_container_output": "output-masks"
+        "azure_container_output": "output-masks",
+        "azure_container_overlay": "overlay-masks"
     }
 }

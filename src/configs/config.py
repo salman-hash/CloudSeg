@@ -19,6 +19,7 @@ class StorageConfig:
     def __init__(self, cfg: dict):
         self.azure_input_container = cfg.get("azure_input_container")
         self.azure_output_container = cfg.get("azure_output_container")
+        self.azure_overlay_container = cfg.get("azure_overlay_container")
 
 
 class DataDirsConfig:
@@ -26,8 +27,10 @@ class DataDirsConfig:
         self.base_dir = Path(cfg.get("base_dir", "../"))
         self.input_images = Path(cfg.get("input_images", "../data/input_images"))
         self.output_masks = Path(cfg.get("output_masks", "../data/output_masks"))
+        self.overlay_masks = Path(cfg.get("overlay_masks", "../data/overlay_masks"))
 
         # Ensure directories exist
         self.input_images.mkdir(parents=True, exist_ok=True)
         self.output_masks.mkdir(parents=True, exist_ok=True)
+        self.overlay_masks.mkdir(parents=True, exist_ok=True)
 
