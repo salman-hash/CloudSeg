@@ -5,3 +5,4 @@ src/model/__pycache__
 src/configs/__pycache__
 src/api/__pycache__
 /scripts/test_output
+/src/testConfig.json
