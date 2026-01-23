@@ -10,7 +10,7 @@ def get_router(model_config, data_dirs, storage_config, database_url=None):
     router = APIRouter()
 
     # Initialize model once
-    model = SegmentationModel(device=model_config.device)
+    model = SegmentationModel(model_config=model_config)
 
     @router.get("/")
     def health_check():
