@@ -14,7 +14,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")  # fallback if not set
 
 
 BASE_DIR = Path(__file__).resolve().parent
-with open(BASE_DIR / "testConfig.json") as f:
+with open(BASE_DIR / "config.json") as f:
     config_json = json.load(f)
 
 MODEL = ModelConfig(config_json.get("model", {}))
