@@ -5,7 +5,8 @@ from PIL import Image
 # =========================
 # CONFIG
 # =========================
-API_URL = "http://20.96.170.75:5000/api/segment"  # change to your VM IP if needed
+serverApi = "http://0.0.0.0:5000/api"
+API_URL = f"{serverApi}/segment"  # change to your VM IP if needed
 
 # Image is outside scripts folder, e.g., parent folder of scripts
 SCRIPT_DIR = Path(__file__).parent
@@ -39,7 +40,7 @@ print(data)
 # =========================
 # Fetch mask from API
 # =========================
-mask_url = f"http://20.96.170.75:5000/api/mask/{data['image_id']}"
+mask_url = f"{serverApi}/mask/{data['image_id']}"
 mask_resp = requests.get(mask_url)
 if mask_resp.status_code == 200:
     mask_local_path = SAVE_DIR / f"{data['image_id']}_mask.png"
