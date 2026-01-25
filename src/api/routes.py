@@ -10,7 +10,8 @@ from db.database import Database
 
 def get_router(model_config: ModelConfig, data_dirs: DataDirsConfig, storage_config: StorageConfig, database_url=None):
     router = APIRouter()
-    db = Database(db_url=database_url)
+    if database_url:
+        db = Database(db_url=database_url)
 
     # Initialize model once
     model = SegmentationModel(model_config=model_config)

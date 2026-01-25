@@ -13,6 +13,13 @@ class Database:
             autoflush=False,
             bind=self.engine
         )
+        conn = self.engine.connect()
+        if conn:
+            print("PostgreSQL Connected successfully!")
+        else:
+            print("PostgreSQL Connection failed!")
+        conn.close()
+
 
     def _get_session(self):
         return self.SessionLocal()
