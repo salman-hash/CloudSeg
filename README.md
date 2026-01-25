@@ -136,7 +136,7 @@ sudo apt install postgresql
 sudo -i -u postgres
 psql
 CREATE DATABASE cloudseg;
-CREATE USER cloudseg_user WITH PASSWORD 'Strong.1234';
+CREATE USER cloudseg_user WITH PASSWORD 'your_passw';
 GRANT ALL PRIVILEGES ON DATABASE cloudseg TO cloudseg_user;
 ```
 
