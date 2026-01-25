@@ -26,9 +26,10 @@ class Database:
 
     def create_job(
         self,
-        image_url: str,
+        image_path: str,
         model_name: str = "deeplabv3_resnet50"
     ) -> int:
+        image_url = str(image_path)
         session = self._get_session()
         try:
             query = text("""
@@ -59,10 +60,12 @@ class Database:
     def complete_job(
         self,
         job_id: int,
-        mask_url: str,
-        overlay_url: str,
+        mask_path: str,
+        overlay_path: str,
         inference_time_ms: int
     ):
+        mask_url = str(mask_path)
+        overlay_url = str(overlay_path)
         session = self._get_session()
         try:
             query = text("""
