@@ -53,7 +53,10 @@ CloudSeg/
 │   │
 │   ├── utils/
 │   │   ├── image_utils.py   # Image processing helpers
-│   │   └── timer.py         # Inference timing
+│   │   └── preprocessing.py # jop preprocessing funcs
+│   │
+│   ├── config/
+│   │   └── config.py        # config handling wrapper
 │   │
 │   └── db/
 │       └── database.py      # SQLAlchemy DB access layer
@@ -64,10 +67,11 @@ CloudSeg/
 │   └── overlay_masks/
 │
 ├── scripts/
-│   └── test_api.py          # API test client
+│   ├── test_api.py          # API test client
+│   └── init_db.sql          # PostgreSQL schema
 │
-├── init_db.sql              # PostgreSQL schema
 ├── requirements.txt
+├── .env
 └── README.md
 ```
 
@@ -194,18 +198,7 @@ Port: 5433
 DB: cloudseg
 User: cloudseg_user
 ```
-
----
-
-## 📌 Resume Highlights
-
-* Designed a **cloud-native ML inference service**
-* Implemented **REST APIs + DB-backed job tracking**
-* Deployed on **Azure VM (Linux)**
-* Used **SQLAlchemy, PostgreSQL, FastAPI, PyTorch**
-* Secure infrastructure (no public DB exposure)
-
-
+Note: If the pgAdmin connection times out, ensure you have added an Inbound Rule to your VM's Network Security Group (NSG) to allow traffic on this port. 
 ---
 
 ## 👤 Author
