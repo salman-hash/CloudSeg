@@ -6,9 +6,11 @@ import shutil, uuid, time
 from PIL import Image
 from model.model import SegmentationModel
 from configs.config import ModelConfig, StorageConfig, DataDirsConfig
+from db.database import Database
 
 def get_router(model_config: ModelConfig, data_dirs: DataDirsConfig, storage_config: StorageConfig, database_url=None):
     router = APIRouter()
+    db = Database(db_url=database_url)
 
     # Initialize model once
     model = SegmentationModel(model_config=model_config)
@@ -31,6 +33,9 @@ def get_router(model_config: ModelConfig, data_dirs: DataDirsConfig, storage_con
         with open(input_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
+        if database_url:
+            job_id = db.create_job(input_path)
+
         # Run inference
         start_time = time.time()
         mask, color_mask_img, overlay_img = model.predict(str(input_path))
@@ -40,9 +45,14 @@ def get_router(model_config: ModelConfig, data_dirs: DataDirsConfig, storage_con
         color_mask_img.save(mask_path)
         overlay_img.save(overlay_path)
 
-        # todo: store metadata to DB using database_url
-        # if database_url:
-        #     ...
+        # store metadata to DB using database_url
+        if database_url:
+            db.complete_job(
+                job_id,
+                mask_path,
+                overlay_path,
+                inference_time
+            )
 
         return {
             "image_id": image_id,

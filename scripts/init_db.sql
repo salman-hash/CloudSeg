@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS segmentation_jobs (
 
     image_url TEXT NOT NULL,
     mask_url TEXT,
+    overlay_url TEXT,
 
     model_name VARCHAR(100) NOT NULL DEFAULT 'deeplabv3_resnet50',
 
