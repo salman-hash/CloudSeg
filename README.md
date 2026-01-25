@@ -199,6 +199,7 @@ DB: cloudseg
 User: cloudseg_user
 ```
 Note: If the pgAdmin connection times out, ensure you have added an Inbound Rule to your VM's Network Security Group (NSG) to allow traffic on this port. 
+
 ---
 
 ## 👤 Author
