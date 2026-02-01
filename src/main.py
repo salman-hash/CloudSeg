@@ -14,8 +14,21 @@ DATABASE_URL = os.getenv("DATABASE_URL")  # fallback if not set
 
 
 BASE_DIR = Path(__file__).resolve().parent
-with open(BASE_DIR / "config.json") as f:
-    config_json = json.load(f)
+config_path = BASE_DIR / "config.json"
+
+try:
+    with open(config_path) as f:
+        config_json = json.load(f)
+except FileNotFoundError as exc:
+    raise RuntimeError(
+        f"Configuration file not found at '{config_path}'. "
+        "Ensure config.json is present in the application directory or update the deployment configuration."
+    ) from exc
+except json.JSONDecodeError as exc:
+    raise RuntimeError(
+        f"Configuration file at '{config_path}' is not valid JSON. "
+        "Please fix the syntax in config.json."
+    ) from exc
 
 MODEL = ModelConfig(config_json.get("model", {}))
 API = APIConfig(config_json.get("api", {}))
